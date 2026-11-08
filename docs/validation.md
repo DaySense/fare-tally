@@ -1,22 +1,40 @@
-# Validation scope
+# Validation and development
 
-The FareTally rename was rechecked on 9 November 2026: all 13 tests passed, the CLI example produced 36 queries and an empty ledger left all 36 unresolved, Ruby/Psych parsed the renamed metadata, and 19 relative Markdown links resolved. The previous FareMosaic directory and release files were retained unchanged.
+FareTally includes a standard-library Python test suite for its offline planner and ledger auditor. It covers inclusive date windows, airport combinations, open jaws, stable case IDs, revision isolation, file preservation, query caps, timezone-aware observation ordering and evidence validation.
 
-The release passed 13 Python standard-library tests and the fictional example through the CLI. The tests cover inclusive endpoints, earlier/later dates, independent return dates, continuity/open jaws, stable case IDs, revision isolation, non-truncating case caps, preservation of prior files, timezone-aware observation ordering, initial plan rows versus later observations, and refusal to treat teaser/failed/invalid records as resolved final queries.
+The planner preserves approved airport-local date combinations, including a later leg with an earlier local date across the international date line. Flight chronology and hotel nights must be checked from actual zoned timestamps and reservations, not inferred by the planner.
 
-The bundled skill-creator quick_validate.py was attempted but could not import PyYAML; the package index was unreachable from the shell. Consequently a successful run of that specific validator is **not claimed**. YAML parsing and basic metadata checks were instead performed using the system Ruby/Psych parser, including the skill name/description and UI invocation metadata. Relative documentation links and ZIP paths were checked. On an environment with PyYAML, the publisher can additionally run the original skill-creator validator. PyYAML and Ruby are not runtime dependencies of the shipped helper.
+## Run the checks
 
-Reproduce from the repository root:
+From the repository root, with Python 3.10+:
 
-```bash
+```sh
 python3 -m unittest discover -s tests -v
-python3 skills/fare-tally/scripts/search_matrix.py plan skills/fare-tally/examples/search-space.json --out /path/to/private-research/demo-plan.json
 ```
 
-The fictional example contains 36 candidate queries. It makes no network calls and returns no fares. A real audit additionally needs a ledger populated from actual observations; do not manufacture evidence to obtain a complete status.
+There are 14 automated tests. Passing them validates these software invariants; it does not prove that an assistant will search every carrier or find the market-wide lowest fare.
 
-Host-level scenarios are in [behavior-checks.md](../tests/behavior-checks.md). They have not been executed against a live booking platform as part of this release. Unit tests and file validation do not prove that an agent will always interview well, search every airline, calculate a real hotel's bill correctly, or discover the market's lowest fare.
+To generate the fictional example in a fresh temporary directory:
 
-Package with `python3 tools/build_release.py`. Only the explicit source allowlist is included; real query reports, browser sessions and the creator's earlier travel files are outside the package. Repository and single-skill ZIPs have different layouts for their respective upload/install workflows.
+```sh
+fare_tally_run_dir=$(mktemp -d)
+python3 skills/fare-tally/scripts/search_matrix.py plan skills/fare-tally/examples/search-space.json --out "$fare_tally_run_dir/plan.json"
+```
 
-The v0.1.1 update changes the Chinese display name to 航价笔记 and adds its separate screening record. Earlier name research and v0.1.0 ZIPs are retained; the research helper is unchanged.
+The example produces 36 candidate queries and no fares. An audit also needs observations in a ledger; an empty or incomplete ledger intentionally returns exit code 1. See [the schema and exit codes](../skills/fare-tally/references/coverage.md).
+
+## Behavioral checks
+
+[Acceptance scenarios](../tests/behavior-checks.md) cover interview quality, baggage, flexible dates, midnight arrivals, hard deadlines, revised preferences, login barriers and incomplete research. Synthetic Chinese and English trials have exercised these parts of the workflow; their prices and travelers are fictional. A limited live-browser check reached a selected return fare and baggage rules, with account eligibility kept distinct from anonymous pricing.
+
+These trials do not establish compatibility with every agent installation or booking platform. New-account login, CAPTCHA handoff, all real date/airport combinations, visas and payment-stage totals require their own evidence when relevant. A completed fare-query audit is not a traveler-eligibility certificate.
+
+## Build release packages
+
+```sh
+python3 tools/build_release.py
+```
+
+The builder includes only an explicit source allowlist. The GitHub source ZIP contains the repository files. The skill ZIP contains `fare-tally/SKILL.md`, its linked resources and LICENSE. Private research, account sessions, screenshots, local archives and generated caches are excluded.
+
+When changing the version, update the builder version and both README download links together. Re-run the checks and compare the uploaded release files with the locally built files before sharing the release.
