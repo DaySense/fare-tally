@@ -11,7 +11,9 @@ See [the fictional example](../examples/search-space.json). Fields:
 - Each segment: unique `id`, approved three-letter `origins`/`destinations`, and `dates` as a list or inclusive `{start,end}`. Both endpoints are included; inputs are deduplicated and sorted.
 - `allow_open_jaw: false` requires each leg's origin to equal the previous destination. `true` permits approved ground gaps and records them, without implying that they are free/feasible. Use separate families or narrower airport sets if only specific gaps are approved.
 
-Do not encode preferences the user did not accept. The only automatic filters are same-origin/destination removal, nondecreasing departure dates and the specified continuity rule. Same-day onward departures remain candidates until actual flight times are known.
+Do not encode preferences the user did not accept. The only automatic filters are same-origin/destination removal and the specified continuity rule. Calendar dates are local to each airport: crossing the date line can make a later leg depart on an earlier local day. Keep those candidates and validate chronological feasibility with actual timezone-aware departure/arrival timestamps. Ordinary impossible date combinations may also remain pending until checked; they are candidates, not feasible itineraries. The ordering of each individual date range must still be valid.
+
+Plans from the local-date-preserving planner include `planner_revision: local-date-preserving-v2`. Regenerate older plans when local-date domains overlap or decrease across legs; older releases could have omitted valid date-line combinations. Retain old plans as historical records.
 
 **Departure-day differences are not hotel-night counts.** For multi-city stays, derive sufficiently broad departure domains from the agreed range and possible arrival patterns; then assess nights, deadlines and usable days from actual selected flights. The generator does not validate time-of-day, route existence, visas or price.
 
