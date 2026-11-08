@@ -84,7 +84,7 @@ def normalize(spec):
 
 
 def generate(spec, max_cases=10000):
-    """Complete within explicit domains; only date ordering/continuity are pruned."""
+    """Keep every approved local-date combination; defer chronology to zoned times."""
     if isinstance(max_cases, bool) or max_cases < 1:
         raise ValueError("max_cases must be positive")
     clean = normalize(spec)
@@ -106,16 +106,18 @@ def generate(spec, max_cases=10000):
             for origin, destination, d in itertools.product(s["origins"], s["destinations"], s["dates"]):
                 if origin == destination:
                     continue
-                if chosen and (d < chosen[-1]["date"] or
-                               (not family["allow_open_jaw"] and origin != chosen[-1]["destination"])):
+                # Local calendar dates at different airports cannot establish chronology.
+                # A westbound date-line crossing can make a later leg depart "yesterday".
+                if chosen and not family["allow_open_jaw"] and origin != chosen[-1]["destination"]:
                     continue
                 walk(index + 1, chosen + [{"id": s["id"], "origin": origin,
                                          "destination": destination, "date": d}])
         walk(0, [])
     if not cases:
-        raise ValueError("No chronological, continuous candidate queries; review the agreed domains")
+        raise ValueError("No continuous candidate queries; review the agreed airport domains")
     digest = hashlib.sha256(json.dumps(clean, sort_keys=True).encode()).hexdigest()
-    return {"version": 1, "revision": clean["revision"], "space_sha256": digest,
+    return {"version": 1, "planner_revision": "local-date-preserving-v2",
+            "revision": clean["revision"], "space_sha256": digest,
             "scope": clean, "case_count": len(cases), "cases": cases,
             "limits": "Departure-date queries only. No live fares, timing coverage, arrival/stay validation or global-minimum certification."}
 
@@ -200,7 +202,7 @@ def audit(plan, ledger):
             "states": dict(states), "by_family": dict(families), "by_leg_airport_date": dict(axes),
             "pending_case_ids": pending, "invalid_entries": errors,
             "stale_entries": stale, "unknown_case_entries": unknown,
-            "limits": "Query coverage only; not proof of truth, every flight/carrier/time inspected, availability, or a global minimum."}
+            "limits": "Query coverage only; not proof of traveler eligibility, truth, every flight/carrier/time inspected, availability, or a global minimum."}
 
 
 def read(path):
