@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "revision": "fictional-demo-r1",
+  "families": [
+    {
+      "id": "return",
+      "allow_open_jaw": false,
+      "segments": [
+        {"id": "outbound", "origins": ["SIN"], "destinations": ["HND", "NRT"], "dates": {"start": "2028-06-10", "end": "2028-06-12"}},
+        {"id": "return", "origins": ["HND", "NRT"], "destinations": ["SIN"], "dates": {"start": "2028-06-17", "end": "2028-06-19"}}
+      ]
+    },
+    {
+      "id": "open-jaw",
+      "allow_open_jaw": true,
+      "segments": [
+        {"id": "outbound", "origins": ["SIN"], "destinations": ["HND", "NRT"], "dates": ["2028-06-10", "2028-06-11", "2028-06-12"]},
+        {"id": "return", "origins": ["KIX"], "destinations": ["SIN"], "dates": ["2028-06-17", "2028-06-18", "2028-06-19"]}
+      ]
+    }
+  ]
+}
