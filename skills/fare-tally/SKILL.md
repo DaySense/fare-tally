@@ -34,7 +34,7 @@ For nontrivial combinations use the offline helper and [its schema](references/c
     python3 scripts/search_matrix.py plan examples/search-space.json --out /path/to/private-research/plan.json
     python3 scripts/search_matrix.py audit /path/to/private-research/plan.json /path/to/private-research/ledger.json
 
-Resolve paths relative to this skill directory. The fictional example produces no prices. The helper enumerates candidate **departure-date queries**, not available flights or feasible hotel stays. Execute cases through supported site controls or an authorized documented API; never turn the matrix into guessed URL grids or undocumented scraping.
+Resolve paths relative to this skill directory. The fictional example produces no prices. The helper enumerates candidate **departure-date queries**, not available flights or feasible hotel stays. Do not prune a later leg solely because its airport-local date is earlier: a date-line crossing can be chronologically valid. Establish flight and connection order from timezone-aware timestamps. Execute cases through supported site controls or an authorized documented API; never turn the matrix into guessed URL grids or undocumented scraping.
 
 If Python is unavailable, maintain the same explicit matrix/ledger manually and disclose that the helper was not run.
 
@@ -46,7 +46,7 @@ Date coverage alone is not time/airline coverage. For finalists inspect practica
 
 Use whole multi-city/open-jaw pricing where supported; joint fares may differ from sums of singles. Split tickets are a separately verified alternative only if accepted, with baggage, protection and transit risks. Every leg/carrier/time/airport change requires repricing the **whole** selection.
 
-Use the intended party, cabin/fare family, bags, currency and account conditions. Distinguish teaser, selection-stage, final itinerary-list and safely viewable pre-payment totals. Do not enter passenger identity, create a hold, accept terms or pay merely to obtain a quote. Stop at the available evidence level if deeper verification requires a consequential action.
+Use the intended party, cabin/fare family, bags, currency and account conditions. If a source omits the requested cabin or required baggage allowance, label that candidate conditional; a carrier name or completed query audit does not prove those requirements. Distinguish teaser, selection-stage, final itinerary-list and safely viewable pre-payment totals. Do not enter passenger identity, create a hold, accept terms or pay merely to obtain a quote. Stop at the available evidence level if deeper verification requires a consequential action.
 
 For finalists capture all local flight dates/times, airports/terminals when relevant, operating/marketing flights, stops, elapsed duration, layovers, airport changes, baggage handling and protection/self-transfer status. Missing flight numbers stay unknown. Check the **actual destination-local arrival date**, not just its clock time or departure day. Do not assume fixed UTC offsets across daylight-saving changes.
 
