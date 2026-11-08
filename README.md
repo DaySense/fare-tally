@@ -2,77 +2,64 @@
 
 [简体中文](README.zh-CN.md) · English
 
-A free, open-source flight-research skill that compares airports, flexible dates and real trip costs through conversation.
+A free, open-source skill for finding lower fares that fit your trip. It helps an AI assistant ask the right questions, compare flexible flight options and explain the actual cost and tradeoffs.
 
-**Find a lower fare that fits the traveler.** The skill first asks about dates and times, nearby airports, stays, baggage, budget airlines, connections and special requirements. It then researches approved combinations, verifies whole-itinerary prices and explains the tradeoffs.
+## What it does
 
-## What makes it useful
+- **Clarifies your preferences first:** nearby airports, outbound and return dates and times, stays, latest arrival, passengers, cabin, bags, budget airlines, connections and special requirements.
+- **Tracks the agreed search space:** earlier and later dates, both ends of each date window, return dates, airport combinations and route options. Unsearched or blocked queries stay visible.
+- **Compares complete bookings:** one-way, return, multi-city and open-jaw trips. Changing one leg means checking the whole fare again.
+- **Looks beyond the ticket price:** required bags, mandatory fees, airport transport, transit hotels and practical flight times. Unknown costs remain unknown.
+- **Checks the details:** actual local arrival dates, paid hotel nights, time zones, required baggage, fare conditions and account or coupon eligibility.
+- **Supports Chinese and English:** use your preferred language and booking platform. Ctrip can be used when available; no platform is assumed always cheapest.
 
-- Earlier **and** later dates, inclusive endpoints and return dates are part of a recorded search matrix.
-- Multi-city and open-jaw fares are verified as whole bookings, not reconstructed from unrelated single-leg prices.
-- Required bags, airport transport and extra lodging are separated from the airfare. Unknown costs stay unknown.
-- Midnight arrivals, paid hotel nights and local arrival deadlines are checked explicitly.
-- Query coverage, failed pages, historical prices and final-versus-stage quotes are visible.
-- Chinese and English prompts and reports are supported; Ctrip is optional, not assumed universally cheapest.
+More acceptable airports and dates can reveal lower fares, but extra ground costs or inconvenient times may outweigh the saving. You can give city names and a ground-travel limit instead of airport codes.
 
 ## Requirements
 
-A Codex installation that supports local skills, plus working live web/browser tools or a suitable authorized flight-search connector. The skill itself does not provide inventory, a browser, an API key or a booking account. Python 3.10+ is optional for the offline coverage helper. This release contains no live booking connector.
+Use Codex with local skills and working browsing/search tools, or a suitable authorized flight-search connector. The skill provides a research workflow, not live inventory, a browser, a booking API or an account. Python 3.10+ is needed only for the optional offline coverage helper.
 
 ## Install
 
-### Ask Codex to install from GitHub
-
-Send this to Codex to install from the published repository:
+Send this **in a Codex chat**, not a terminal:
 
 ```text
 $skill-installer Install the skill from https://github.com/DaySense/fare-tally/tree/main/skills/fare-tally
 ```
 
-That is a **Codex chat prompt**, not a terminal command. If the skill installer is unavailable, use the manual method.
+[Latest release](https://github.com/DaySense/fare-tally/releases/latest) · [Download the skill ZIP](https://github.com/DaySense/fare-tally/releases/download/v0.1.3/fare-tally-skill-v0.1.3.zip)
 
-[Download the single-skill ZIP](https://github.com/DaySense/fare-tally/releases/download/v0.1.2/fare-tally-skill-v0.1.2.zip) · [Latest release](https://github.com/DaySense/fare-tally/releases/latest)
+### Manual installation
 
-### Manual installation, no terminal required
+1. Download and extract the **skill ZIP**. It contains the `fare-tally` folder directly. If you use **Code → Download ZIP** instead, find `skills/fare-tally` inside the repository download.
+2. Copy that **entire skill folder**, including its resources, into your Codex skill directory: `~/.agents/skills/` for your user, or `.agents/skills/` in a project.
+3. The final entry point should be `<skills-directory>/fare-tally/SKILL.md`, with `agents`, `references`, `scripts` and `examples` beside it. Do not add an extra repository-folder layer.
+4. Try `$fare-tally` in the next chat turn. If it does not appear, check the folder and restart Codex. For an update, back up the installed folder and replace it as a complete unit.
 
-Download/extract the repository, then copy the **entire** `skills/fare-tally` folder into the skills directory your Codex installation uses. Current official Codex documentation uses `~/.agents/skills/` for user skills or `.agents/skills/` inside a project. Verify this final structure:
-
-```text
-<skills-directory>/fare-tally/SKILL.md
-<skills-directory>/fare-tally/agents/openai.yaml
-<skills-directory>/fare-tally/references/...
-<skills-directory>/fare-tally/scripts/...
-```
-
-Do not copy just SKILL.md or nest the whole repository inside the skills directory. If the installed skill is not visible on the next turn, restart Codex and check the location. A standalone GitHub repository is not automatically installed in ordinary ChatGPT chat. See [official local skill guidance](https://learn.chatgpt.com/docs/build-skills) and [manual skill directory examples](https://developers.openai.com/api/reference/cli).
+Use the directory supported by your installed Codex version; its bundled installer is the preferred way to handle version differences. See the [official skill documentation](https://learn.chatgpt.com/docs/build-skills). A GitHub download alone does not install a skill in ordinary ChatGPT chat.
 
 ## Use
 
 ```text
-Use $fare-tally to find a low-cost return flight. I can shift my dates by two days. Please ask about nearby airports, baggage and connection preferences before searching.
+Use $fare-tally to find a cheaper return flight. My dates can move by two days, I need a checked bag, and I prefer daytime departures. Please clarify airports and connection options before searching.
 ```
 
-```text
-用 $fare-tally 帮我查低价机票，日期可以前后调整两天。请先问清周边机场、行李和中转偏好，再开始查价。
-```
+You do not need to supply every detail at once. The assistant should ask a few relevant questions at a time, confirm material choices, then return a shortlist with prices, flight details, tradeoffs and remaining gaps.
 
-You do not need to know airport codes. If Ctrip or another source needs an account, the agent explains why and asks you to log in in the relevant browser yourself. Never send passwords, OTPs or passport numbers in the chat. It researches fares; it does not automatically book or pay.
+If a site needs a login, the assistant should explain why and which browser session is involved. Enter passwords, verification codes and CAPTCHA answers yourself; do not send them in chat. Research does not authorize a booking, ticket hold or payment.
 
-## Optional coverage helper
+## Search limits and privacy
 
-From the installed skill folder:
+The result is the lowest verified within the disclosed search scope, not a market-wide price guarantee. A completed query does not prove that every flight was inspected or that all traveler requirements were verified. Missing cabin, baggage or transit evidence makes a candidate conditional. Member and coupon prices are labeled separately.
 
-```bash
-python3 scripts/search_matrix.py plan examples/search-space.json --out /path/to/private-research/plan.json
-python3 scripts/search_matrix.py audit /path/to/private-research/plan.json /path/to/private-research/ledger.json
-```
+Keep real itineraries, quotes, screenshots and browser information in private storage outside this repository. Do not include them in public issues. The bundled example uses fictional search dates and contains no real fares.
 
-The sample is fictional. These commands plan/audit departure-date queries **offline**; they do not search airlines, generate prices or establish hotel-stay feasibility. See [the schema and exit codes](skills/fare-tally/references/coverage.md). Incomplete audits intentionally return exit code 1.
+## Optional offline helper
 
-## Project and name
+The [coverage helper](skills/fare-tally/references/coverage.md) expands approved airport/date combinations and audits a query ledger. It makes no network calls and does not fetch fares or validate hotel stays. Normal users can let the assistant manage it; Python is optional for the conversational workflow.
 
-[Publishing guide (中文)](docs/publish.zh-CN.md) · [Name research and limits](docs/name-check-2026-11-09.md) · [Validation](docs/validation.md)
+Development checks and package-building instructions are in [validation.md](docs/validation.md).
 
-FareTally / 航价笔记 is the new working name, replacing FareMosaic to reduce association with existing Mosaic products in aviation. Public name screening found no directly same-named project; China and Singapore trademark clearance is **not complete**. The Chinese display name was subsequently changed from 票价有数 to 航价笔记; see the [Chinese name update](docs/chinese-name-check-2026-11-09.md). The earlier research record retains its historical queries and scope. There is no affiliation with airlines, OTAs or similarly named products. No private traveler records, browser sessions or credentials are included. Keep real research in a private directory outside this repository; use fictional data in contributions/issues.
+## License
 
-MIT licensed; see [LICENSE](LICENSE). Fares change; the reported result is the lowest verified within the disclosed scope, not a market-wide guarantee.
+[MIT](LICENSE).

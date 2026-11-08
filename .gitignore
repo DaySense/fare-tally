@@ -12,3 +12,7 @@ local-data/
 sessions/
 quotes/
 screenshots/
+private-archives/
+qa/
+node_modules/
+.pytest_cache/
