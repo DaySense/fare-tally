@@ -1,0 +1,4 @@
+interface:
+  display_name: "FareTally · 航价笔记"
+  short_description: "Find lower fares across airports, dates, and total trip costs."
+  default_prompt: "Use $fare-tally to clarify my travel preferences, compare flexible flight options, and report verified fares with search coverage."
