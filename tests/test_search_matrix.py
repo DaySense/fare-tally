@@ -1,4 +1,5 @@
 import copy
+from datetime import datetime
 import importlib.util
 import itertools
 import json
@@ -39,10 +40,25 @@ class MatrixTests(unittest.TestCase):
         plan = matrix.generate(space())
         got = {(c['legs'][0]['destination'], c['legs'][0]['date'], c['legs'][1]['date']) for c in plan['cases']}
         expected = {(airport, f'2028-05-0{a}', f'2028-05-0{b}')
-                    for airport, a, b in itertools.product(['BBB', 'CCC'], [1, 2, 3], [2, 3, 4]) if b >= a}
+                    for airport, a, b in itertools.product(['BBB', 'CCC'], [1, 2, 3], [2, 3, 4])}
         self.assertEqual(got, expected)
         self.assertIn(('BBB', '2028-05-01', '2028-05-04'), got)
         self.assertIn(('CCC', '2028-05-03', '2028-05-03'), got)
+
+    def test_date_line_connection_with_earlier_local_day_is_retained(self):
+        # Synthetic times, not real flight schedules. UTC ordering is independently valid.
+        times = [datetime.fromisoformat(s) for s in [
+            '2027-06-02T10:00:00+12:00', '2027-06-01T20:00:00-10:00',
+            '2027-06-01T23:00:00-10:00', '2027-06-02T07:00:00-07:00']]
+        self.assertTrue(all(a < b for a, b in zip(times, times[1:])))
+        trip = {'version': 1, 'revision': 'date-line', 'families': [{
+            'id': 'trip', 'allow_open_jaw': False, 'segments': [
+                {'id': 'out', 'origins': ['AKL'], 'destinations': ['HNL'], 'dates': ['2027-06-02']},
+                {'id': 'onward', 'origins': ['HNL'], 'destinations': ['SFO'], 'dates': ['2027-06-01']}
+            ]}]}
+        plan = matrix.generate(trip)
+        self.assertEqual(plan['case_count'], 1)
+        self.assertEqual([leg['date'] for leg in plan['cases'][0]['legs']], ['2027-06-02', '2027-06-01'])
 
     def test_open_jaws_are_explicit_and_not_free(self):
         strict = matrix.generate(space(False))
