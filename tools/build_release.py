@@ -6,9 +6,10 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'dist'
+VERSION = '0.1.3'
 FILES = [
     '.gitignore', 'LICENSE', 'README.md', 'README.zh-CN.md',
-    'docs/publish.zh-CN.md', 'docs/name-check-2026-11-09.md', 'docs/validation.md', 'docs/chinese-name-check-2026-11-09.md',
+    'docs/validation.md',
     'skills/fare-tally/SKILL.md', 'skills/fare-tally/agents/openai.yaml',
     'skills/fare-tally/references/intake.md',
     'skills/fare-tally/references/search-and-evidence.md',
@@ -25,8 +26,8 @@ def main():
         p = ROOT / item
         if not p.is_file() or p.is_symlink(): raise SystemExit(f'Missing or unsafe source: {item}')
     OUTPUT.mkdir(exist_ok=True)
-    source = OUTPUT/'fare-tally-github-v0.1.2.zip'
-    skill = OUTPUT/'fare-tally-skill-v0.1.2.zip'
+    source = OUTPUT/f'fare-tally-github-v{VERSION}.zip'
+    skill = OUTPUT/f'fare-tally-skill-v{VERSION}.zip'
     with zipfile.ZipFile(source, 'w', zipfile.ZIP_DEFLATED) as z:
         for item in FILES: z.write(ROOT/item, 'fare-tally/'+item)
     with zipfile.ZipFile(skill, 'w', zipfile.ZIP_DEFLATED) as z:
