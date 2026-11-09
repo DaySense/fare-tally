@@ -2,6 +2,8 @@
 
 [简体中文](README.zh-CN.md) · English
 
+[![skills.sh directory](https://img.shields.io/badge/skills.sh-FareTally-111111)](https://skills.sh/daysense/fare-tally/fare-tally)
+
 A free, open-source skill for finding lower fares that fit your trip. It helps an AI assistant ask the right questions, compare flexible flight options and explain the actual cost and tradeoffs.
 
 ## What it does
@@ -28,6 +30,18 @@ $skill-installer Install the skill from https://github.com/DaySense/fare-tally/t
 ```
 
 [Latest release](https://github.com/DaySense/fare-tally/releases/latest) · [Download the skill ZIP](https://github.com/DaySense/fare-tally/releases/download/v0.1.3/fare-tally-skill-v0.1.3.zip)
+
+### Install with the skills CLI
+
+Alternatively, with Node.js 22.20+, npm and Git installed, run this **in a terminal from the project where you want to use the skill**:
+
+```bash
+npx skills add DaySense/fare-tally --skill fare-tally --agent codex
+```
+
+Confirm the installation when prompted. This installs to the current project by default; add `--global` for use across projects. Then try `$fare-tally` in Codex's next chat turn.
+
+The CLI sends anonymous installation telemetry used by skills.sh. Set the `DISABLE_TELEMETRY=1` environment variable to opt out. See the [CLI documentation](https://github.com/vercel-labs/skills) and [FareTally's directory page](https://skills.sh/daysense/fare-tally/fare-tally). A directory listing does not establish compatibility with every agent; this project's instructions and validation target Codex.
 
 ### Manual installation
 

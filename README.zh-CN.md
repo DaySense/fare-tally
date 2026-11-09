@@ -2,6 +2,8 @@
 
 简体中文 · [English](README.md)
 
+[![skills.sh 目录](https://img.shields.io/badge/skills.sh-FareTally-111111)](https://skills.sh/daysense/fare-tally/fare-tally)
+
 一个免费开源的低价机票研究 Skill。它帮助 AI 助手先问清需求，再比较灵活航班方案，说明实际花费和取舍。
 
 ## 它能做什么
@@ -28,6 +30,18 @@ $skill-installer 请从 https://github.com/DaySense/fare-tally/tree/main/skills/
 ```
 
 [最新发布版](https://github.com/DaySense/fare-tally/releases/latest) · [下载 Skill 安装包](https://github.com/DaySense/fare-tally/releases/download/v0.1.3/fare-tally-skill-v0.1.3.zip)
+
+### 使用 skills CLI 安装
+
+另一种方式：先安装 Node.js 22.20+、npm 和 Git，再在**想使用这个 Skill 的项目目录中打开终端**，运行：
+
+```bash
+npx skills add DaySense/fare-tally --skill fare-tally --agent codex
+```
+
+按提示确认安装。默认仅安装到当前项目；添加 `--global` 可供不同项目使用。安装后，在 Codex 的下一轮对话尝试 `$fare-tally`。
+
+这个 CLI 会发送用于 skills.sh 统计的匿名安装数据；设置环境变量 `DISABLE_TELEMETRY=1` 可退出统计。参见 [CLI 文档](https://github.com/vercel-labs/skills)及 [FareTally 目录页](https://skills.sh/daysense/fare-tally/fare-tally)。被目录收录不代表兼容全部 AI 助手，本项目的使用说明与验证以 Codex 为目标。
 
 ### 手动安装
 
