@@ -2,9 +2,13 @@
 
 简体中文 · [English](README.md)
 
-[![skills.sh 目录](https://img.shields.io/badge/skills.sh-FareTally-111111)](https://skills.sh/daysense/fare-tally/fare-tally)
+[![skills.sh 安装统计](https://skills.sh/b/daysense/fare-tally)](https://skills.sh/daysense/fare-tally/fare-tally)
 
 一个免费开源的低价机票研究 Skill。它帮助 AI 助手先问清需求，再比较灵活航班方案，说明实际花费和取舍。
+
+![FareTally 10 秒动态预览：先问清需求、展开方案、比较总成本](https://github.com/user-attachments/assets/bac18abe-49a2-4a4a-b6a4-527ddf9ea801)
+
+[观看 48 秒中文项目介绍](https://github.com/user-attachments/assets/738bbf65-39ad-4467-ab57-37547711fde9)。视频为流程示意，价格是示例数字，不是实时机票报价。
 
 ## 它能做什么
 
