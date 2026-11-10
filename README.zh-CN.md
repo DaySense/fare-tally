@@ -6,10 +6,6 @@
 
 一个免费开源的低价机票研究 Skill。它帮助 AI 助手先问清需求，再比较灵活航班方案，说明实际花费和取舍。
 
-![FareTally 10 秒动态预览：先问清需求、展开方案、比较总成本](https://github.com/user-attachments/assets/bac18abe-49a2-4a4a-b6a4-527ddf9ea801)
-
-[观看 48 秒中文项目介绍](https://github.com/user-attachments/assets/738bbf65-39ad-4467-ab57-37547711fde9)。视频为流程示意，价格是示例数字，不是实时机票报价。
-
 ## 它能做什么
 
 - **先确认需求**：周边机场、去程和返程的日期与时段、每站停留、最晚抵达时间、人数舱位、行李、廉航、中转及特殊要求。

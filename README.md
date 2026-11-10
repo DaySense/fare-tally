@@ -6,10 +6,6 @@
 
 A free, open-source skill for finding lower fares that fit your trip. It helps an AI assistant ask the right questions, compare flexible flight options and explain the actual cost and tradeoffs.
 
-![10-second animated overview of FareTally: clarify preferences, explore options and compare total costs](https://github.com/user-attachments/assets/bac18abe-49a2-4a4a-b6a4-527ddf9ea801)
-
-[Watch the 48-second overview (Chinese)](https://github.com/user-attachments/assets/738bbf65-39ad-4467-ab57-37547711fde9). Animated illustration; prices are examples, not live quotes.
-
 ## What it does
 
 - **Clarifies your preferences first:** nearby airports, outbound and return dates and times, stays, latest arrival, passengers, cabin, bags, budget airlines, connections and special requirements.
